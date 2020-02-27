@@ -10,11 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Ruta de inisio del sistema
+Route::get('/', function () {    
+     return view('auth.login');
+})->name('logeo');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
