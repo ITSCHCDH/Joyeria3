@@ -18,10 +18,18 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!--Estilo del carousel -->
+    <style>
+        /* Make the image fully responsive */
+        .carousel-inner img {
+            width: 100%;            
+        }
+    </style>
 </head>
 <body>
+    <!--Menu del sistema  -->
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">            
             <div class="container">
                 <a class="navbar-brand" href="#">
                     {{ 'JoyasFREDKIOS' }}
