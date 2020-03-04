@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Iconos google -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!--Estilo del carousel -->
     <style>
         /* Make the image fully responsive */
@@ -32,6 +36,9 @@
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">            
             <div class="container">
                 <a class="navbar-brand" href="#">
+                    <img src="{{ asset('imagenes/Logo.png') }}" alt="logo" style="width:40px;">
+                </a>
+                <a class="navbar-brand" href="#">
                     {{ 'JoyasFREDKIOS' }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -41,7 +48,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Articulos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Ventas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Proveedores</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -49,7 +64,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('logeo') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('logeo') }}">{{ __('Inicio') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
@@ -63,10 +78,13 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
+
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="material-icons" style="font-size:15px">exit_to_app</i>
+                                        {{ __('Salir') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -80,11 +98,17 @@
             </div>
         </nav>
 
-       <div>
+        <div>
              @yield('content')
-       </div>
+        </div>
           
-        
+        <!--Pie de pagina  -->
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+           
+            <a class="navbar-brand" href="#"><small><em>2020,Todos los derechos reservados</em></small></a>    
+            <a class="navbar-brand ml-auto" href="#"><small><em>by Oscar Delgado Camacho</em></small></a>      
+        </nav>
+
     </div>
 </body>
 </html>
