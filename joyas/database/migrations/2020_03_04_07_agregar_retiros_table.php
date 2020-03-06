@@ -17,8 +17,9 @@ class AgregarRetirosTable extends Migration
             $table->bigIncrements('id');
             $table->integer('monto');
             $table->date('fecha');
-            $table->integer('id_inversionista')-unsigned();
-            $table->foreing('id_inversionista')->references('id')->on('inversionistas')->ondelete('cascade');
+            $table->bigInteger('id_inversionista')->unsigned();
+
+            $table->foreign('id_inversionista')->references('id')->on('inversionistas')->ondelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,10 +15,23 @@ Route::get('/', function () {
      return view('auth.login');
 })->name('logeo');
 
+//Ruta para registrar usuarios
+Route::get('/registro',function(){
+	if(Auth::guard('web')->check()){
+	return view('auth.register');
+	}
+})->name('registro');
+
+//Ruta para consulta de usuarios
+Route::get('/usuarios',function(){
+	if(Auth::guard('web')->check()){
+		return view('Admin.usuarios');
+	}
+})->name('usuarios');
+
 
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 

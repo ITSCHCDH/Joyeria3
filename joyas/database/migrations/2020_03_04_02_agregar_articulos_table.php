@@ -15,7 +15,7 @@ class AgregarArticulosTable extends Migration
     {
         Schema::create('articulos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_categoria')->unsigned();
+            $table->bigInteger('id_categoria')->unsigned()->nullable();
             $table->string('nombre',45);
             $table->string('descripcion',100);
             $table->string('marca',45);
@@ -29,9 +29,10 @@ class AgregarArticulosTable extends Migration
             $table->decimal('precio_venta', 6, 2);
             $table->string('ubicacion',45);
             $table->enum('status',['Existente','Vendido'])->default('Existente');
-            $table->integer('id_proveedor')->unsigned();
-            $table->foreign('id_categoria')->references('id')->on('categorias')->ondelete('cascade');
-            $table->foreign('id_proveedor')->references('id')->on('proveedores')->ondelete('cascade');
+            $table->bigInteger('id_proveedor')->unsigned()->nullable();
+            
+            $table->foreign('id_categoria')->references('id')->on('categorias')->onDelete('cascade');
+            $table->foreign('id_proveedor')->references('id')->on('proveedores')->onDelete('cascade');
             $table->timestamps();
         });
     }

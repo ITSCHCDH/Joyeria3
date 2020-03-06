@@ -17,8 +17,9 @@ class AgregarInversionesTable extends Migration
             $table->bigIncrements('id');
             $table->date('fecha');
             $table->integer('cantidad');
-            $table->integer('id_inversionista')->unsigned();
-            $table->foreing('id_inversionista')->references('id')->on('inversinistas')->ondelete('cascade');            
+            $table->bigInteger('id_inversionista')->unsigned();
+
+            $table->foreign('id_inversionista')->references('id')->on('inversionistas')->ondelete('cascade');            
             $table->timestamps();
         });
     }

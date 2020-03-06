@@ -47,7 +47,11 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                        @if (Auth::check())
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('home')}}">Inicio</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Articulos</a>
                         </li>
@@ -57,8 +61,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Proveedores</a>
                         </li>
+                        <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                   Administración <span class="caret"></span>
+                                </a>                                
+                                @if (Route::has('register'))
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">                             
+                                       <a class="dropdown-item" href="{{ route('usuarios') }}">{{ __('Usuarios') }}</a>                       
+                                </div> 
+                                @endif   
+                                                
+                        </li>
                     </ul>
-
+                    @endif
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -66,11 +81,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logeo') }}">{{ __('Inicio') }}</a>
                             </li>
-                            @if (Route::has('register'))
+                            <!--@if (Route::has('register'))
                                 <li class="nav-item">
-                                    <!--<a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>-->
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif
+                            @endif-->
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -99,6 +114,7 @@
         </nav>
 
         <div>
+            <br><br><br>
              @yield('content')
         </div>
           

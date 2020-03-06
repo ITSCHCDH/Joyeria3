@@ -15,10 +15,11 @@ class AgregarArtVendidosTable extends Migration
     {
         Schema::create('art_vendidos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('folio_venta')->unsigned();
-            $table->integer('id_articulo')->unsigned();
+            $table->bigInteger('folio_venta')->unsigned();
+            $table->bigInteger('id_articulo')->unsigned();
             $table->double('precio', 6, 2);
             $table->integer('cantidad')->unsigned();
+
             $table->foreign('id_articulo')->references('id')->on('articulos')->ondelete('cascade');
             $table->foreign('folio_venta')->references('id')->on('ventas');            
             $table->timestamps();
