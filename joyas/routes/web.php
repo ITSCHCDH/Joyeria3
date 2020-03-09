@@ -23,12 +23,8 @@ Route::get('/registro',function(){
 })->name('registro');
 
 //Ruta para consulta de usuarios
-Route::get('/usuarios',function(){
-	if(Auth::guard('web')->check()){
-		return view('Admin.usuarios');
-	}
-})->name('usuarios');
-
+Route::get('Admin/usuarios/index','UsuariosController@index')->name('usuarios');
+//Route //Clase para usar las rutas::middleware('auth:api')//Proteccion de la ruta pra que no acepte llamadas sin autenticar->get//Metodo de http('Admin/usuarios/index'//URL,'UsuariosController@index'//Controlador al que hace referencia)->name('usuarios')//Nombre de la ruta;
 
 
 Auth::routes();
