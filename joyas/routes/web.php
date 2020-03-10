@@ -23,11 +23,13 @@ Route::get('/registro',function(){
 })->name('registro');
 
 //Ruta para consulta de usuarios
-Route::get('Admin/usuarios/index','UsuariosController@index')->name('usuarios');
-//Route //Clase para usar las rutas::middleware('auth:api')//Proteccion de la ruta pra que no acepte llamadas sin autenticar->get//Metodo de http('Admin/usuarios/index'//URL,'UsuariosController@index'//Controlador al que hace referencia)->name('usuarios')//Nombre de la ruta;
+//Route::get('Admin/usuarios/index','UsuariosController@index')->name('usuarios')->middleware('auth'); //Ruta individual
+//Sintaxis //Route //Clase para usar las rutas::middleware('auth:api')//Proteccion de la ruta pra que no acepte llamadas sin autenticar->get//Metodo de http('Admin/usuarios/index'//URL,'UsuariosController@index'//Controlador al que hace referencia)->name('usuarios')//Nombre de la ruta;
+
+Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
+	Route::get('/usuarios/index','UsuariosController@index')->name('usuarios');
+});
 
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-
-
