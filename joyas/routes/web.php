@@ -28,6 +28,15 @@ Route::get('/registro',function(){
 
 Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	Route::get('/usuarios/index','UsuariosController@index')->name('usuarios');
+
+	//Rutas del controlador de articulos
+	Route::get('/articulos/index','ArticulosController@index')->name('articulos.index');
+	Route::get('/articulos/create','ArticulosController@create')->name('articulos.create');
+
+	//Rutas del controlador de categorias
+	Route::get('/categorias/index','CategoriasController@index')->name('categorias.index');
+	Route::get('/categorias/create','CategoriasController@create')->name('categorias.create');
+
 });
 
 
