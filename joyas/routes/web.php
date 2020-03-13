@@ -35,7 +35,9 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 
 	//Rutas del controlador de categorias
 	Route::get('/categorias/index','CategoriasController@index')->name('categorias.index');
-	Route::get('/categorias/create','CategoriasController@create')->name('categorias.create');
+	Route::get('/categorias/store','CategoriasController@store')->name('categorias.store');
+	Route::get('/categorias/actualizar','CategoriasController@actualizar')->name('categorias.actualizar');
+	Route::post('/categorias/{id}/eliminar','CategoriasController@eliminar')->name('categorias.eliminar');
 
 });
 

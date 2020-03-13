@@ -21,6 +21,9 @@
 
     <!-- Iconos google -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Iconos awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!--Estilo del carousel -->
     <style>
@@ -31,6 +34,9 @@
     </style>
 </head>
 <body>
+    <!--Incluir jQuery  -->
+    <script src="{{asset('jQuery/jquery-3.4.1.js')}}"></script>
+
     <!--Menu del sistema  -->
     <div id="app">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">            
@@ -61,28 +67,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Proveedores</a>
                         </li>
-                        <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                   Administración <span class="caret"></span>
-                                </a>                                
-                                @if (Route::has('register'))
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">                             
-                                       <a class="dropdown-item" href="{{ route('usuarios') }}">{{ __('Usuarios') }}</a>                       
-                                </div> 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">                             
-                                       <a class="dropdown-item" href="{{ route('categorias.index') }}">{{ __('Categorias') }}</a>                       
-                                </div> 
-
-                                @endif   
-                                                
-                        </li>
+                       
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                              Dropdown link
+                              Administración
                             </a>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item" href="#">Link 1</a>
-                              <a class="dropdown-item" href="#">Link 2</a>
+                              <a class="dropdown-item" href="{{ route('usuarios') }}">{{ __('Usuarios') }}</a>
+                              <a class="dropdown-item" href="{{ route('categorias.index') }}">{{ __('Categorias') }}</a>
                               <a class="dropdown-item" href="#">Link 3</a>
                             </div>
                         </li>
@@ -129,7 +121,15 @@
 
         <div>
             <br><br><br>
-             @yield('content')
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    @include('templates.flash-message')
+                    @yield('content')
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+             
         </div>
           
         <!--Pie de pagina  -->
@@ -140,5 +140,42 @@
         </nav>
 
     </div>
+    
+    <script>
+        $(document).ready(function(event)
+        {
+            $('.mdshide').delay(2000).fadeOut(300);
+        });
+
+        function guardar(id)
+        {          
+            var cat=$('#categoria'+id).val();  
+            $.ajax({
+                type:'get',
+                url:'{{route("categorias.actualizar")}}',
+                datatype:'json',
+                data:{
+                    'id':id,
+                    'categoria': cat                   
+                },
+                success:function(response){
+                    console.log(response['tipo']);
+                    $('.alert-success').fadeIn(3000);
+                    if(response['tipo'] == 'error'){
+                        $('.alert-danger').delay(2000).fadeIn(300);
+                        $('.mdshide').delay(2000).fadeOut(300);
+                    }
+                    if(response['tipo'] == 'success'){
+                        $('.alert-success').delay(2000).fadeIn(300);
+                        //$('.mdshide').delay(2000).fadeOut(300);
+                    }
+                }
+
+            });
+        };
+
+
+      
+    </script>
 </body>
 </html>
