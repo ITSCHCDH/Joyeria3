@@ -78,19 +78,21 @@ class CategoriasController extends Controller
     }
     
     //Metodo que actualiza la categoria en la bd
-    public function actualizar(Request $request){             
+    public function actualizar(Request $request,$id){             
         $nombre_ya_existe = Categoria::where([
             ['categoria','=',$request->categoria],
             ['id','<>',$request->id]
         ])->get()->count()>0?true: false;
         if($nombre_ya_existe)
         {               
-            return response()->json(array('tipo' => 'error','mensaje' => 'La categoria ya existe'));
+             return redirect()->route('categorias.index')
+        ->with('error','La categoria ya existe');
         }
         $cat = Categoria::find($request->id);
         $cat->fill($request->all());
         $cat->save();
-        return response()->json(array('tipo' => 'success','mensaje' => 'La categoria se edito de forma correcta'));
+        return redirect()->route('categorias.index')
+        ->with('success','La categoria se registro correctamente');
     }
 
     /**

@@ -141,41 +141,13 @@
 
     </div>
     
+    
     <script>
+        //Script qwue cierra los mensajes flash de forma automatica
         $(document).ready(function(event)
         {
             $('.mdshide').delay(2000).fadeOut(300);
-        });
-
-        function guardar(id)
-        {          
-            var cat=$('#categoria'+id).val();  
-            $.ajax({
-                type:'get',
-                url:'{{route("categorias.actualizar")}}',
-                datatype:'json',
-                data:{
-                    'id':id,
-                    'categoria': cat                   
-                },
-                success:function(response){
-                    console.log(response['tipo']);
-                    $('.alert-success').fadeIn(3000);
-                    if(response['tipo'] == 'error'){
-                        $('.alert-danger').delay(2000).fadeIn(300);
-                        $('.mdshide').delay(2000).fadeOut(300);
-                    }
-                    if(response['tipo'] == 'success'){
-                        $('.alert-success').delay(2000).fadeIn(300);
-                        //$('.mdshide').delay(2000).fadeOut(300);
-                    }
-                }
-
-            });
-        };
-
-
-      
+        });  
     </script>
 </body>
 </html>
