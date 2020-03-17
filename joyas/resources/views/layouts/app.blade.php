@@ -32,6 +32,10 @@
             width: 100%;            
         }
     </style>
+     <!--Librerias para uso del calendario -->
+    
+
+
 </head>
 <body>
     <!--Incluir jQuery  -->
@@ -66,6 +70,16 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('proveedores.index')}}">Proveedores</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                              Operaciones
+                            </a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ route('inversiones.index') }}">Inversiones</a>
+                              <a class="dropdown-item" href="#">Retiros </a>
+                              <a class="dropdown-item" href="#">Ventas</a>
+                            </div>
                         </li>
                        
                         <li class="nav-item dropdown">
@@ -150,5 +164,6 @@
             $('.mdshide').delay(2000).fadeOut(300);
         });  
     </script>
+   
 </body>
 </html>

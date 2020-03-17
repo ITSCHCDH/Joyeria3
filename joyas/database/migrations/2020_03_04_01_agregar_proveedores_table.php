@@ -15,11 +15,11 @@ class AgregarProveedoresTable extends Migration
     {
         Schema::create('proveedores', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre',100);
-            $table->string('direccion',150);
-            $table->string('rfc',10);
-            $table->integer('telefono');
-            $table->string('imail',50);
+            $table->string('nombre',150);
+            $table->string('direccion',200);
+            $table->string('rfc',15);
+            $table->string('telefono',20);
+            $table->string('imail',100);
             $table->timestamps();
         });
     }
