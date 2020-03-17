@@ -1,8 +1,8 @@
 @section('content')
     @extends('layouts.app')  
-	<h2>Categorias</h2>
+	<h2>inversionistas</h2>
 	
-	<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modCreate">
+	<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalCreate">
 		<i class="fa fa-plus-square" style="font-size:15px"></i>
     	Nuevo
   	</button>  	
@@ -13,47 +13,47 @@
 		    <thead class="thead-dark">
 		      <tr>
 		        <th>ID</th>
-		        <th>CATEGORIA</th>	
+		        <th>NOMBRE</th>	
 		        <th>ACCIONES</th>			        
 		      </tr>
 		    </thead> 
 		    <tbody>
-		    	@foreach($categorias as $cat)
+		    	@foreach($inversionistas as $inv)
 			        <tr>
-			           <td>{{$cat->id}}</td>
-			           <td>{{$cat->categoria}}</td>	
+			           <td>{{$inv->id}}</td>
+			           <td>{{$inv->nombre}}</td>	
 			           <td>							
-			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="editar_articulo({{$cat}},'{{ route('categorias.actualizar',$cat->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
-			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo_articulo({{$cat}},'{{ route('categorias.eliminar',$cat->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="editar_articulo({{$inv}},'{{ route('inversionistas.actualizar',$inv->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
+			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo_articulo({{$inv}},'{{ route('inversionistas.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
 			           </td>
 			        </tr>			       
 			    @endforeach					        
 		    </tbody>
 		 </table>
-		 {{ $categorias->links() }}				
+		 {{ $inversionistas->links() }}				
 	</div>		
 	     
 
 
 
 	<!-- Modal para altas -->
-	  <div class="modal fade" id="modCreate">
+	  <div class="modal fade" id="modalCreate">
 	    <div class="modal-dialog">
 	      <div class="modal-content">
 	      
 	        <!-- Modal Header -->
 	        <div class="modal-header">
-	          <h4 class="modal-title">Categorias/Altas</h4>
+	          <h4 class="modal-title">inversionistas/Altas</h4>
 	          <button type="button" class="close" data-dismiss="modal">&times;</button>
 	        </div>
 	        
 	        <!-- Modal body -->
-	        <form action="{{ route('categorias.store') }}">
+	        <form action="{{ route('inversionistas.store') }}">
 	        	@csrf
 		        <div class="modal-body">            
 				    <div class="form-group">
-				      <label for="name">Categoria:</label>
-				      <input type="text" class="form-control" placeholder="Introduzca nombre de la categoria" id="categoria" name="categoria" required>
+				      <label for="name">Nombre del inversionista:</label>
+				      <input type="text" class="form-control" placeholder="Introduzca nombre del inversionista" id="nombre" name="nombre" required>
 				    </div>				
 		        </div>
 		        
@@ -84,8 +84,8 @@
 	        	@csrf
 		        <div class="modal-body">            
 				    <div class="form-group">
-				      <label for="name">Categoria:</label>
-				      <input type="input" class="form-control" placeholder="Introduzca nombre de la categoria" id="cat" name="categoria"  required>
+				      <label for="name">nombre:</label>
+				      <input type="input" class="form-control" placeholder="Introduzca nombre del inversionista" id="inv" name="nombre"  required>
 				    </div>				
 		        </div>						        
 		        <!-- Modal footer -->
@@ -130,16 +130,16 @@
         function editar_articulo(n,r)
         {                            
             //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando
-            document.getElementById("cat").value = n["categoria"];           
-            txt="Categorias/Editar"+"("+n["categoria"]+")";            
+            document.getElementById("inv").value = n["nombre"];           
+            txt="inversionistas/Editar"+"("+n["nombre"]+")";            
             $("#textCabUpd").text(txt);           
             $('#formEditar').attr('action', r);            
         }
 
         function undo_articulo(n,r)
         {                            
-            txt="Categorias/Eliminar"+"("+n["categoria"]+")"; //Creamos la cadena que aparecera en la cabecera del modal     
-            txt2 ="Esta seguro de eliminar la categoria: "+n["categoria"];    
+            txt="inversionistas/Eliminar"+"("+n["nombre"]+")"; //Creamos la cadena que aparecera en la cabecera del modal     
+            txt2 ="Esta seguro de eliminar el inversionista: "+n["nombre"];    
             $("#textCabUnd").text(txt);
             $("#msgEliminar").text(txt2);           
             $('#formEliminar').attr('action', r);            

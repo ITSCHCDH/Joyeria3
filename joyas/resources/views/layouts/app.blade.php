@@ -65,7 +65,7 @@
                             <a class="nav-link" href="#">Ventas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Proveedores</a>
+                            <a class="nav-link" href="{{route('proveedores.index')}}">Proveedores</a>
                         </li>
                        
                         <li class="nav-item dropdown">
@@ -75,7 +75,7 @@
                             <div class="dropdown-menu">
                               <a class="dropdown-item" href="{{ route('usuarios') }}">{{ __('Usuarios') }}</a>
                               <a class="dropdown-item" href="{{ route('categorias.index') }}">{{ __('Categorias') }}</a>
-                              <a class="dropdown-item" href="#">Link 3</a>
+                              <a class="dropdown-item" href="{{ route('inversionistas.index') }}">Inversionistas</a>
                             </div>
                         </li>
                     </ul>
@@ -87,6 +87,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logeo') }}">{{ __('Inicio') }}</a>
                             </li>
+                            <!-- Codigo necesario para el registro del primer usuario del sistema -->
                             <!--@if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>

@@ -36,9 +36,18 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	//Rutas del controlador de categorias
 	Route::get('/categorias/index','CategoriasController@index')->name('categorias.index');
 	Route::get('/categorias/store','CategoriasController@store')->name('categorias.store');
-	Route::get('/categorias/{id}/actualizar','CategoriasController@actualizar')->name('categorias.actualizar');
-	Route::post('/categorias/{id}/eliminar','CategoriasController@eliminar')->name('categorias.eliminar');
-
+	Route::get('/categorias/{id}/actualizar','CategoriasController@update')->name('categorias.actualizar');
+	Route::get('/categorias/{id}/eliminar','CategoriasController@destroy')->name('categorias.eliminar');
+	//Rutas del controlador de proveedores
+	Route::get('/proveedores/index','ProveedoresController@index')->name('proveedores.index');
+	Route::get('/proveedores/store','ProveedoresController@store')->name('proveedores.store');
+	Route::get('/proveedores/{id}/actualizar','ProveedoresController@update')->name('proveedores.actualizar');
+	Route::get('/proveedores/{id}/eliminar','ProveedoresController@destroy')->name('proveedores.eliminar');
+	//Rutas del controlador de inversionistas
+	Route::get('/inversionistas/index','InversionistasController@index')->name('inversionistas.index');
+	Route::get('/inversionistas/store','InversionistasController@store')->name('inversionistas.store');
+	Route::get('/inversionistas/{id}/actualizar','InversionistasController@update')->name('inversionistas.actualizar');
+	Route::get('/inversionistas/{id}/eliminar','InversionistasController@destroy')->name('inversionistas.eliminar');
 });
 
 

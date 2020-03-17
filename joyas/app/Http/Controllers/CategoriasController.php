@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Categoria;
+use App\Articulo;
 use DB;
-use Laracasts\Flash\Flash;
 
 class CategoriasController extends Controller
 {
@@ -16,21 +16,12 @@ class CategoriasController extends Controller
      */
     public function index()
     {
-        $categorias=Categoria::select('id','categoria')->paginate(10);   
-        
+        $categorias=Categoria::select('id','categoria')->paginate(10);          
         return view('Admin.categorias.index')
-        ->with('categorias',$categorias); //Llama a la vista y le envia los articulos
+        ->with('categorias',$categorias); //Llama a la vista y le envia los articulos 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-       //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -42,7 +33,8 @@ class CategoriasController extends Controller
     {
         $nombre_ya_existe = Categoria::where('categoria','=',$request->categoria)->get()->count() > 0? true: false;
         if($nombre_ya_existe){            
-            return redirect()->back();
+            return redirect()->route('categorias.index')
+            ->with('error','La categoria ya esta dada de alta');
         }
         //Recibimos los datos de la vista de altas y en este metodo es donde registramos los datos a la BD
         $cat = new Categoria($request->all());      
@@ -54,48 +46,9 @@ class CategoriasController extends Controller
         ->with('success','La categoria se registro correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    //Metodo que busca el articulo a editar
-    public function edit($id)
-    {
-      //
-    }
+  
     
-    //Metodo que actualiza la categoria en la bd
-    public function actualizar(Request $request,$id){             
-        $nombre_ya_existe = Categoria::where([
-            ['categoria','=',$request->categoria],
-            ['id','<>',$request->id]
-        ])->get()->count()>0?true: false;
-        if($nombre_ya_existe)
-        {               
-             return redirect()->route('categorias.index')
-        ->with('error','La categoria ya existe');
-        }
-        $cat = Categoria::find($request->id);
-        $cat->fill($request->all());
-        $cat->save();
-        return redirect()->route('categorias.index')
-        ->with('success','La categoria se registro correctamente');
-    }
-
-    /**
+     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -104,7 +57,20 @@ class CategoriasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nombre_ya_existe = Categoria::where([
+            ['categoria','=',$request->categoria],
+            ['id','<>',$request->id]
+        ])->get()->count()>0?true: false;
+        if($nombre_ya_existe)
+        {               
+            return redirect()->route('categorias.index')
+            ->with('error','La categoria ya existe');
+        }
+        $cat = Categoria::find($request->id);
+        $cat->fill($request->all());
+        $cat->save();
+        return redirect()->route('categorias.index')
+        ->with('success','La categoria se modifico correctamente');
     }
 
     /**
@@ -115,17 +81,22 @@ class CategoriasController extends Controller
      */
     public function destroy($id)
     {
-         $cat = Categoria::find($id);
-        if($cat==null){           
-            return view('admin.areas.editar')        
-            ->with('danger','La categoria no existe');
+       $cat = Categoria::find($id);
+        if($cat==null){
+            return redirect()->route('categorias.index')
+            ->with('error','La categoria no existe');
         }
-        return view('admin.areas.editar')
-        ->with('cat',$cat);
+        $tiene_articulos = Articulo::where('id_categoria','=',$id)->get()->count() > 0? true: false;
+       
+        if($tiene_articulos)
+        {
+            return redirect()->route('categorias.index')
+            ->with('error','No se puede eliminar debido a que hay articulos registrados que dependen de esta categoria');            
+        }
+        $cat->delete();
+        return redirect()->route('categorias.index')
+        ->with('success','La categoria se elimino correctamente');
     }
 
-    public function eliminar($id)
-    {
-        //
-    }
+ 
 }
