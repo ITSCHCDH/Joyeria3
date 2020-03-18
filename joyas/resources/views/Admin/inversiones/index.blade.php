@@ -57,8 +57,21 @@
 		        <div class="modal-body">            
 				    <div class="form-group">
 				      <label for="name">Fecha de inversión:</label>
-				      
-				    </div>				
+				      <input type="date" name="calendario" class="form-control form-control-sm">
+				    </div>	
+				    <div class="form-group">
+				      <label for="name">Cantidad:</label>
+				      <input type="text" name="cantidad" class="form-control form-control-sm">
+				    </div>			     
+				    <div class="form-group">
+						<label for="sel1">Inversionista:</label>
+						<select class="form-control form-control-sm" id="sel1">
+						    <option>1</option>
+						    <option>2</option>
+						    <option>3</option>
+						    <option>4</option>
+						</select>
+					</div>		   			
 		        </div>
 		        
 		        <!-- Modal footer -->

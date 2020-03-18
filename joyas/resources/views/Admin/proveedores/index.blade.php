@@ -72,8 +72,8 @@
 				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca rfc" id="categoria" name="rfc">
 				    </div>
 				    <div class="form-group">
-				      <label for="name">Telefono:</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca telefono" id="categoria" name="telefono">
+				      <label for="Telefono">Telefono:</label>
+				      <input type="tel" id="phone"  class="form-control form-control-sm" name="phone" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}" placeholder="Telefono 10 digitos">
 				    </div>	
 				    <div class="form-group">
 				      <label for="name">Correo electronico:</label>

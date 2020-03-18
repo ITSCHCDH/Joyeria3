@@ -163,6 +163,12 @@
         {
             $('.mdshide').delay(2000).fadeOut(300);
         });  
+
+        //Script del calendario
+        $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap4',
+        locale: 'es-es',
+        });
     </script>
    
 </body>
