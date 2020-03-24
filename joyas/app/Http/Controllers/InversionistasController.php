@@ -17,7 +17,7 @@ class InversionistasController extends Controller
     {
         $inversionistas=Inversionista::select('id','nombre')->paginate(10);          
         return view('Admin.inversionistas.index')
-        ->with('inversionistas',$inversionistas); //Llama a la vista y le envia los articulos
+        ->with('inversionistas',$inversionistas);
     }
 
    

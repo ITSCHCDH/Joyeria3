@@ -19,7 +19,7 @@ class AgregarProveedoresTable extends Migration
             $table->string('direccion',200);
             $table->string('rfc',15);
             $table->string('telefono',20);
-            $table->string('imail',100);
+            $table->string('email',100);
             $table->timestamps();
         });
     }

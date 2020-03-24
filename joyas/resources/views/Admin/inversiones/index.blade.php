@@ -24,17 +24,19 @@
 			        <tr>
 			           <td>{{$inv->id}}</td>
 			           <td>{{$inv->fecha}}</td>	
-			           <td>X</td>
-			           <td>Y</td>
+			           <td>{{$inv->cantidad}}</td>
+			           <td>{{$inv->nombre}}</td>
 			           <td>							
-			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="editar_articulo({{$inv}},'{{ route('inversionistas.actualizar',$inv->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
-			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo_articulo({{$inv}},'{{ route('inversionistas.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$inv->cantidad}},'{{$inv->id}}',{{$inv->id_inversionista}},'{{$inv->fecha}}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
+			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$inv->id}},'{{ route('inversiones.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+
+
 			           </td>
 			        </tr>			       
 			    @endforeach					        
 		    </tbody>
 		 </table>
-		 {{ $inversiones->links() }}				
+		 {{ $inversiones->links() }}		
 	</div>		
 	     
 
@@ -52,31 +54,31 @@
 	        </div>
 	        
 	        <!-- Modal body -->
-	        <form action="{{ route('inversionistas.store') }}">
+	        <form id="formAltas">
 	        	@csrf
 		        <div class="modal-body">            
 				    <div class="form-group">
 				      <label for="name">Fecha de inversión:</label>
-				      <input type="date" name="calendario" class="form-control form-control-sm">
+				      <input type="date" name="calendario" class="form-control form-control-sm" required>
 				    </div>	
 				    <div class="form-group">
-				      <label for="name">Cantidad:</label>
-				      <input type="text" name="cantidad" class="form-control form-control-sm">
+				      <label for="name" >Cantidad:</label>
+				      <input type="text" name="cantidad" class="form-control form-control-sm" required>
 				    </div>			     
 				    <div class="form-group">
-						<label for="sel1">Inversionista:</label>
-						<select class="form-control form-control-sm" id="sel1">
-						    <option>1</option>
-						    <option>2</option>
-						    <option>3</option>
-						    <option>4</option>
+						<label for="selAdd">Inversionista:</label>
+						<select class="form-control form-control-sm" id="selAdd" required=>					
+							<option value="0">Selecciona un inversionista</option>    
+						   @foreach($inversionistas as $inv2)
+								<option value="{{$inv2->id}}">{{$inv2->nombre}}</option>
+							@endforeach
 						</select>
 					</div>		   			
 		        </div>
 		        
 		        <!-- Modal footer -->
 		        <div class="modal-footer">
-		          <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+		          <button type="submit" class="btn btn-primary btn-sm" onclick="obtIdSelectAdd()">Guardar</button>
 		          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
 		        </div>
 	        </form>
@@ -99,15 +101,31 @@
 	        <!-- Modal body -->
 	        <form id="formEditar">
 	        	@csrf
-		        <div class="modal-body">            
+		        <div class="modal-body"> 
+		        	<div class="form-group">
+				      <label for="name">Inversión a modificar:</label>
+				      <input type="text" name="inversion" id="inversion" class="form-control form-control-sm" readonly="true">
+				    </div>           
 				    <div class="form-group">
-				      <label for="name">nombre:</label>
-				      <input type="input" class="form-control" placeholder="Introduzca nombre del inversionista" id="inv" name="nombre"  required>
-				    </div>				
+				      <label for="name">Fecha de inversión:</label>
+				      <input type="date" name="calendario" id="dateEdit" class="form-control form-control-sm" required>
+				    </div>	
+				    <div class="form-group">
+				      <label for="name">Cantidad:</label>
+				      <input type="input" class="form-control" placeholder="Introduzca nombre del inversionista" id="cantidad" name="cantidad"  required>
+				    </div>	
+				     <div class="form-group">
+						<label for="selEdit">Inversionista:</label>
+						<select class="form-control form-control-sm" id="selEdit" required>				    
+						    @foreach($inversionistas as $inv2)
+								<option value="{{$inv2->id}}">{{$inv2->nombre}}</option>
+							@endforeach
+						</select>
+					</div>			
 		        </div>						        
 		        <!-- Modal footer -->
 		        <div class="modal-footer">
-		        	<button type="submit" class="btn btn-primary btn-sm">Guardar</button>  
+		        	<button type="submit" class="btn btn-primary btn-sm" onclick="obtIdSelectEdit()">Guardar</button>  
 		            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
 		        </div>    
 		    </form>    
@@ -142,24 +160,50 @@
 	      </div>
 	    </div>
 	  </div>
+
 	<script>
 	  //Script que toma los datos de la tabla y los envia al modal pra ser editados    
-        function editar_articulo(n,r)
+        function edit(c,n,id,f)
         {                            
             //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando
-            document.getElementById("inv").value = n["nombre"];           
-            txt="inversionistas/Editar"+"("+n["nombre"]+")";            
-            $("#textCabUpd").text(txt);           
-            $('#formEditar').attr('action', r);            
+           
+            document.getElementById("cantidad").value = c;           
+            txt="inversionistas/Editar("+n+")";            
+            $("#textCabUpd").text(txt);  
+             document.getElementById("inversion").value = n;         
+            $("#selEdit").val(id);
+            $('#dateEdit').val(f); 
+
+                
         }
 
-        function undo_articulo(n,r)
+        function undo(n,r)
         {                            
-            txt="inversionistas/Eliminar"+"("+n["nombre"]+")"; //Creamos la cadena que aparecera en la cabecera del modal     
-            txt2 ="Esta seguro de eliminar el inversionista: "+n["nombre"];    
+            txt="inversionistas/Eliminar"+"("+n+")"; //Creamos la cadena que aparecera en la cabecera del modal     
+            txt2 ="Esta seguro de eliminar la inversión numero "+n;    
             $("#textCabUnd").text(txt);
             $("#msgEliminar").text(txt2);           
-            $('#formEliminar').attr('action', r);            
+            $('#formEliminar').attr('action', r); 
+
+        }
+
+        function obtIdSelectAdd()
+        {
+        	//Con esta linea obtenemos el valor del option seleccionado
+        	id=document.getElementById('selAdd').value;
+        	//Esta linea es para crear la ruta que seguira el form para dar de alta
+        	r=id+"/store";
+        	$('#formAltas').attr('action', r);        	
+        }
+
+        function obtIdSelectEdit()
+        {
+        	//Con esta linea obtenemos el valor del option seleccionado
+        	id_i=document.getElementById('selEdit').value;
+        	id_e=document.getElementById('inversion').value;
+        	//Esta linea es para crear la ruta que seguira el form para dar de alta
+        	r=id_e+"/actualizar/"+id_i;         	                  
+            $('#formEditar').attr('action', r);       	
         }
     </script>
 @endsection

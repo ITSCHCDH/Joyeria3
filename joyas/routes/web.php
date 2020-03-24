@@ -50,8 +50,8 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	Route::get('/inversionistas/{id}/eliminar','InversionistasController@destroy')->name('inversionistas.eliminar');
 	//Rutas del controlador de inversiones
 	Route::get('/inversiones/index','InversionesController@index')->name('inversiones.index');
-	Route::get('/inversiones/store','InversionesController@store')->name('inversiones.store');
-	Route::get('/inversiones/{id}/actualizar','InversionesController@update')->name('inversiones.actualizar');
+	Route::get('/inversiones/{id_i}/store','InversionesController@store')->name('inversiones.store');
+	Route::get('/inversiones/{id}/actualizar/{inv}','InversionesController@update')->name('inversiones.actualizar');
 	Route::get('/inversiones/{id}/eliminar','InversionesController@destroy')->name('inversiones.eliminar');
 });
 

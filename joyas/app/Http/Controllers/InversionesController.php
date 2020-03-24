@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Inversion;
+use App\Inversionista;
 use DB;
 
 class InversionesController extends Controller
@@ -15,9 +16,16 @@ class InversionesController extends Controller
      */
     public function index()
     {
-         $inversiones=Inversion::select('id','fecha','cantidad','id_inversionista')->paginate(10);          
+        $inversiones = DB::table('inversiones')
+        ->join('inversionistas', 'inversiones.id_inversionista', '=', 'inversionistas.id')           
+        ->select('inversiones.id','inversiones.fecha','inversiones.cantidad','inversiones.id_inversionista','inversionistas.nombre')->paginate(10);
+           //dd( $inversiones);
+
         return view('Admin.inversiones.index')
-        ->with('inversiones',$inversiones); //Llama a la vista y le envia los articulos
+        ->with('inversiones',$inversiones)
+        ->with('inversionistas',Inversionista::all());
+
+        
     }
 
     /**
@@ -36,9 +44,20 @@ class InversionesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        //
+        if($id==0)
+        {
+            return redirect()->route('inversiones.index')
+            ->with('warning','Debes de seleccionar un inversionista valido');
+        }
+       
+        DB::table('inversiones')->insert(
+            ['fecha' =>$request->calendario , 'cantidad' =>$request->cantidad, 'id_inversionista'=>$id ]
+        );
+        
+        return redirect()->route('inversiones.index')
+        ->with('success','La inversión se registro correctamente');
     }
 
     /**
@@ -70,9 +89,13 @@ class InversionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $inv)
     {
-        //
+        $affected = DB::table('inversiones')
+                ->where('id', $id)
+                ->update(['fecha' => $request->calendario, 'cantidad'=>$request->cantidad,'id_inversionista'=>$inv]);
+        return redirect()->route('inversiones.index')
+        ->with('success','La inversión se modifico correctamente');
     }
 
     /**
@@ -83,6 +106,14 @@ class InversionesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $inv = Inversion::find($id);
+        if($inv==null){
+            return redirect()->route('inversiones.index')
+            ->with('error','La inversión no existe');
+        }
+              
+        $inv->delete();
+        return redirect()->route('inversiones.index')
+        ->with('success','La inversión se elimino correctamente');
     }
 }
