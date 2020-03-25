@@ -16,20 +16,12 @@ class ProveedoresController extends Controller
      */
     public function index() 
     {
-        $proveedores=Proveedor::select('id','nombre','direccion','rfc','telefono','imail')->paginate(10);         
+        $proveedores=Proveedor::select('id','nombre','direccion','rfc','telefono','email')->paginate(10);         
         return view('Admin.proveedores.index')
         ->with('proveedores',$proveedores); //Llama a la vista y le envia los articulos
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -39,17 +31,17 @@ class ProveedoresController extends Controller
      */
     public function store(Request $request)
     {
+
          $nombre_ya_existe = Proveedor::where('nombre','=',$request->nombre)->get()->count() > 0? true: false;
         if($nombre_ya_existe){            
             return redirect()->route('proveedores.index')
             ->with('error','El proveedor ya se encuentra registrado');
         }
         //Recibimos los datos de la vista de altas y en este metodo es donde registramos los datos a la BD
-        $pro = new Proveedor($request->all());      
-       
-        //Comando para guardar el registro      
-        $pro->save();
-        
+
+        DB::table('proveedores')->insert(
+        ['nombre' => $request->nombreA, 'direccion' => $request->direccionA, 'rfc' => $request->rfcA, 'telefono' => $request->telefonoA, 'email' => $request->emailA]
+        );        
         return redirect()->route('proveedores.index')
         ->with('success','El proveedor se registro correctamente');
     }
@@ -64,7 +56,7 @@ class ProveedoresController extends Controller
      */
     public function update(Request $request, $id)
     {        
-         $nombre_ya_existe = Proveedor::where([
+        $nombre_ya_existe = Proveedor::where([
             ['nombre','=',$request->nombre],
             ['id','<>',$request->id]
         ])->get()->count()>0?true: false;

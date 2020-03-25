@@ -29,10 +29,10 @@
 			           <td>{{$pro->direccion}}</td>
 			           <td>{{$pro->rfc}}</td>
 			           <td>{{$pro->telefono}}</td>
-			           <td>{{$pro->imail}}</td>
+			           <td>{{$pro->email}}</td>
 			           <td>							
-			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="editarPro({{$pro}},'{{ route('proveedores.actualizar',$pro->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
-			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undoPro({{$pro}},'{{ route('proveedores.eliminar',$pro->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$pro}},'{{ route('proveedores.actualizar',$pro->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
+			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$pro}},'{{ route('proveedores.eliminar',$pro->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
 			           </td>
 			        </tr>			       
 			    @endforeach					        
@@ -61,23 +61,23 @@
 		        <div class="modal-body">            
 				    <div class="form-group">
 				      <label for="name">Nombre:</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca nombre" id="categoria" name="nombre" required>
+				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca nombre" id="nombreA" name="nombreA" required>
 				    </div>
 				    <div class="form-group">
 				      <label for="name">Dirección:</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca dirección" id="categoria" name="direccion" required>
+				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca dirección" id="direccionA" name="direccionA" required>
 				    </div>	
 				    <div class="form-group">
 				      <label for="name">RFC:</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca rfc" id="categoria" name="rfc">
+				      <input type="text" class="form-control form-control-sm" placeholder="Introduzca rfc" id="rfcA" name="rfcA">
 				    </div>
 				    <div class="form-group">
 				      <label for="Telefono">Telefono:</label>
-				      <input type="tel" id="phone"  class="form-control form-control-sm" name="phone" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}" placeholder="Telefono 10 digitos">
+				      <input type="tel" id="telefonoA"  class="form-control form-control-sm" name="telefonoA" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}" placeholder="Telefono 10 digitos">
 				    </div>	
 				    <div class="form-group">
 				      <label for="name">Correo electronico:</label>
-				      <input type="email" class="form-control form-control-sm" placeholder="Introduzca email" id="categoria" name="imail">
+				      <input type="email" class="form-control form-control-sm" placeholder="Introduzca email" id="emailA" name="emailA">
 				    </div>						
 		        </div>
 		        
@@ -125,7 +125,7 @@
 				    </div>	
 				    <div class="form-group">
 				      <label for="name">Correo electronico:</label>
-				      <input type="email" class="form-control form-control-sm" placeholder="Introduzca email" id="imail" name="imail">
+				      <input type="email" class="form-control form-control-sm" placeholder="Introduzca email" id="email" name="email">
 				    </div>				
 		        </div>						        
 		        <!-- Modal footer -->
@@ -170,20 +170,20 @@
 
 
 	  //Script que toma los datos de la tabla y los envia al modal pra ser editados    
-        function editarPro(n,r)
+        function edit(n,r)
         {                            
-            //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando
+            //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando            
             document.getElementById("nombre").value = n["nombre"];
             document.getElementById("direccion").value = n["direccion"];  
             document.getElementById("rfc").value = n["rfc"]; 
             document.getElementById("telefono").value = n["telefono"]; 
-            document.getElementById("imail").value = n["imail"];       
+            document.getElementById("email").value = n["email"];       
             txt="Proveedores/Editar"+"("+n["nombre"]+")";            
             $("#textCabUpd").text(txt);           
             $('#formEditar').attr('action', r);            
         }
 
-        function undoPro(n,r)
+        function undo(n,r)
         {                            
             txt="Proveedores/Eliminar"+"("+n["nombre"]+")"; //Creamos la cadena que aparecera en la cabecera del modal     
             txt2 ="Esta seguro de eliminar al proveedor: "+n["nombre"];    

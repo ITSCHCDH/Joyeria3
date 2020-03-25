@@ -20,7 +20,9 @@ class ArticulosController extends Controller
          $articulos=Articulo::select('id','nombre','descripcion','marca')->paginate(10);  //2    
         
         return view('Admin.articulos.index')
-        ->with('articulos',$articulos); //Llama a la vista y le envia los articulos
+        ->with('articulos',$articulos)
+        ->with('proveedores',Proveedor::all())
+        ->with('categorias',Categoria::all());
     }
 
     /**
@@ -32,7 +34,7 @@ class ArticulosController extends Controller
     {
        $categorias = Categoria::all();        
         return view('admin.articulos.create')
-        ->with('categorias',$categorias);
+        ->with('categorias',$categorias); 
 
     }
 
@@ -44,7 +46,7 @@ class ArticulosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd('Si llega');
     }
 
     /**

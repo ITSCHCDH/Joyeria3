@@ -23,8 +23,8 @@
 			           <td>{{$cat->id}}</td>
 			           <td>{{$cat->categoria}}</td>	
 			           <td>							
-			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="editar_articulo({{$cat}},'{{ route('categorias.actualizar',$cat->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
-			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo_articulo({{$cat}},'{{ route('categorias.eliminar',$cat->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$cat}},'{{ route('categorias.actualizar',$cat->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
+			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$cat}},'{{ route('categorias.eliminar',$cat->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
 			           </td>
 			        </tr>			       
 			    @endforeach					        
@@ -127,7 +127,7 @@
 	  </div>
 	<script>
 	  //Script que toma los datos de la tabla y los envia al modal pra ser editados    
-        function editar_articulo(n,r)
+        function edit(n,r)
         {                            
             //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando
             document.getElementById("cat").value = n["categoria"];           
@@ -136,7 +136,7 @@
             $('#formEditar').attr('action', r);            
         }
 
-        function undo_articulo(n,r)
+        function undo(n,r)
         {                            
             txt="Categorias/Eliminar"+"("+n["categoria"]+")"; //Creamos la cadena que aparecera en la cabecera del modal     
             txt2 ="Esta seguro de eliminar la categoria: "+n["categoria"];    

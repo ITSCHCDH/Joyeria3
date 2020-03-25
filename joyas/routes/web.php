@@ -20,7 +20,7 @@ Route::get('/registro',function(){
 	if(Auth::guard('web')->check()){
 	return view('auth.register');
 	}
-})->name('registro');
+})->name('registro'); 
 
 //Ruta para consulta de usuarios
 //Route::get('Admin/usuarios/index','UsuariosController@index')->name('usuarios')->middleware('auth'); //Ruta individual
@@ -31,7 +31,7 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 
 	//Rutas del controlador de articulos
 	Route::get('/articulos/index','ArticulosController@index')->name('articulos.index');
-	Route::get('/articulos/create','ArticulosController@create')->name('articulos.create');
+	Route::get('/articulos/store','ArticulosController@store')->name('articulos.store');
 
 	//Rutas del controlador de categorias
 	Route::get('/categorias/index','CategoriasController@index')->name('categorias.index');

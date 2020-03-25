@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Inversionista;
+use App\Inversion;
 use DB;
 
 class InversionistasController extends Controller
@@ -20,7 +21,7 @@ class InversionistasController extends Controller
         ->with('inversionistas',$inversionistas);
     }
 
-   
+    
 
     /**
      * Store a newly created resource in storage.
@@ -76,7 +77,20 @@ class InversionistasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $nombre_ya_existe = Inversionista::where([
+            ['nombre','=',$request->nombre],
+            ['id','<>',$request->id]
+        ])->get()->count()>0?true: false;
+        if($nombre_ya_existe)
+        {               
+          return redirect()->route('inversionistas.index')
+        ->with('error','El inversionista ya existe');
+        }
+        $inv = Inversionista::find($request->id);
+        $inv->fill($request->all());
+        $inv->save();
+         return redirect()->route('inversionistas.index')
+        ->with('success','El inversionista se modifico correctamente');
     }
 
     /**
@@ -87,6 +101,20 @@ class InversionistasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pro = Inversionista::find($id);
+        if($pro==null){
+            return redirect()->route('inversionistas.index')
+            ->with('error','El inversionista no existe');
+        }
+        $tiene_inversiones = Inversion::where('id_inversionista','=',$id)->get()->count() > 0? true: false;
+       
+        if($tiene_inversiones)
+        {
+             return redirect()->route('inversionistas.index')
+            ->with('error','El inversionista no se puede eliminar debido a que tiene inversiones activas');           
+        }
+        $pro->delete();
+        return redirect()->route('inversionistas.index')
+        ->with('success','El inversionista se elimino correctamente');
     }
 }

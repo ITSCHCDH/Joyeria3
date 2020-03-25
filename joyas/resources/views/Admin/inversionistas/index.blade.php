@@ -23,11 +23,11 @@
 			           <td>{{$inv->id}}</td>
 			           <td>{{$inv->nombre}}</td>	
 			           <td>							
-			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="editar_articulo({{$inv}},'{{ route('inversionistas.actualizar',$inv->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
-			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo_articulo({{$inv}},'{{ route('inversionistas.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$inv}},'{{ route('inversionistas.actualizar',$inv->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
+			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$inv}},'{{ route('inversionistas.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
 			           </td>
 			        </tr>			       
-			    @endforeach					        
+			    @endforeach		 			        
 		    </tbody>
 		 </table>
 		 {{ $inversionistas->links() }}				
@@ -127,7 +127,7 @@
 	  </div>
 	<script>
 	  //Script que toma los datos de la tabla y los envia al modal pra ser editados    
-        function editar_articulo(n,r)
+        function edit(n,r)
         {                            
             //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando
             document.getElementById("inv").value = n["nombre"];           
@@ -136,10 +136,10 @@
             $('#formEditar').attr('action', r);            
         }
 
-        function undo_articulo(n,r)
+        function undo(n,r)
         {                            
             txt="inversionistas/Eliminar"+"("+n["nombre"]+")"; //Creamos la cadena que aparecera en la cabecera del modal     
-            txt2 ="Esta seguro de eliminar el inversionista: "+n["nombre"];    
+            txt2 ="Esta seguro de eliminar al inversionista: "+n["nombre"];    
             $("#textCabUnd").text(txt);
             $("#msgEliminar").text(txt2);           
             $('#formEliminar').attr('action', r);            
