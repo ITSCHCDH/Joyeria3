@@ -17,7 +17,10 @@ class ArticulosController extends Controller
      */
     public function index()
     {
-         $articulos=Articulo::select('id','nombre','descripcion','marca')->paginate(10);  //2    
+        
+        $articulos = DB::table('articulos as a')
+        ->join('categorias as c', 'a.id_categoria', '=', 'c.id')           
+        ->select('c.categoria','a.*')->paginate(10);       
         
         return view('Admin.articulos.index')
         ->with('articulos',$articulos)
@@ -25,18 +28,7 @@ class ArticulosController extends Controller
         ->with('categorias',Categoria::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-       $categorias = Categoria::all();        
-        return view('admin.articulos.create')
-        ->with('categorias',$categorias); 
-
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -44,32 +36,25 @@ class ArticulosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id_cat,$id_pro)
     {
-        dd('Si llega');
+        //dd("Si llega");
+        $nombre_ya_existe = Articulo::where('nombre','=',$request->nombre)->get()->count() > 0? true: false;
+        if($nombre_ya_existe){            
+            return redirect()->route('articulos.index')
+            ->with('error','El articulo ya esta dado de alta');
+        }
+        //Recibimos los datos de la vista de altas y en este metodo es donde registramos los datos a la BD
+        $art = new Articulo($request->all());              
+        $art->id_categoria=$id_cat;
+        $art->id_proveedor=$id_pro;
+        $art->save();
+        
+        return redirect()->route('articulos.index')
+        ->with('success','El articulo se registro correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
@@ -80,7 +65,20 @@ class ArticulosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $nombre_ya_existe = Articulo::where([
+            ['nombre','=',$request->nombre],
+            ['id','<>',$id]
+        ])->get()->count()>0?true: false;
+        if($nombre_ya_existe){
+            return redirect()->route('articulos.index')
+            ->with('error','El articulo ya existe');
+        }
+        $art = Articulo::find($id);
+        $art->fill($request->all());
         //
+        $art->save();
+       return redirect()->route('articulos.index')
+        ->with('success','El articulo se modifico correctamente');
     }
 
     /**
@@ -91,6 +89,13 @@ class ArticulosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $art = Articulo::find($id);
+        if($art==null){
+            return redirect()->route('articulos.index')
+            ->with('error','El articulo no existe');
+        }        
+        $art->delete();
+        return redirect()->route('articulos.index')
+        ->with('success','El articulo se elimino correctamente');
     }
 }

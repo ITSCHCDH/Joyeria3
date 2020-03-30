@@ -7,9 +7,12 @@
     	Nuevo
   	</button>  	
   	<hr>
+
+  	<input class="form-control pull-right form-control-sm" id="inpBuscar" type="text" placeholder="Buscar.." style="width: 200px;">
   	
 	<div class="table-responsive">
-		<table class="table table-sm">
+		<br>
+		<table class="table table-sm" id="mitabla">
 		    <thead class="thead-dark">
 		      <tr>
 		        <th>ID</th>
@@ -144,5 +147,16 @@
             $("#msgEliminar").text(txt2);           
             $('#formEliminar').attr('action', r);            
         }
+    </script>
+    <script>
+    	 //Codigo que busca dentro de la tabla 	    
+	    $(document).ready(function(){
+		    $("#inpBuscar").on("keyup", function() {
+		        var value = $(this).val().toLowerCase();
+		        $("#mitabla tr").filter(function() {
+		        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		        });
+		    });			   
+		});
     </script>
 @endsection

@@ -27,11 +27,16 @@ Route::get('/registro',function(){
 //Sintaxis //Route //Clase para usar las rutas::middleware('auth:api')//Proteccion de la ruta pra que no acepte llamadas sin autenticar->get//Metodo de http('Admin/usuarios/index'//URL,'UsuariosController@index'//Controlador al que hace referencia)->name('usuarios')//Nombre de la ruta;
 
 Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
+	//Rutas del controlador de usuarios
 	Route::get('/usuarios/index','UsuariosController@index')->name('usuarios');
+	Route::get('/usuarios/{id}/update','UsuariosController@update')->name('usuarios.update');
+	Route::get('/usuarios/{id}/destroy','UsuariosController@destroy')->name('usuarios.destroy');
 
 	//Rutas del controlador de articulos
 	Route::get('/articulos/index','ArticulosController@index')->name('articulos.index');
-	Route::get('/articulos/store','ArticulosController@store')->name('articulos.store');
+	Route::get('/articulos/store/{id_cat}/{id_pro}','ArticulosController@store')->name('articulos.store');
+	Route::get('/articulos/{id}/destroy','ArticulosController@destroy')->name('articulos.destroy');
+	Route::get('/articulos/{id}/update','ArticulosController@update')->name('articulos.update');
 
 	//Rutas del controlador de categorias
 	Route::get('/categorias/index','CategoriasController@index')->name('categorias.index');
@@ -53,6 +58,8 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	Route::get('/inversiones/{id_i}/store','InversionesController@store')->name('inversiones.store');
 	Route::get('/inversiones/{id}/actualizar/{inv}','InversionesController@update')->name('inversiones.actualizar');
 	Route::get('/inversiones/{id}/eliminar','InversionesController@destroy')->name('inversiones.eliminar');
+	//Rutas de controlador de ventas
+	Route::get('/ventas/index','VentasController@index')->name('ventas.index');
 });
 
 

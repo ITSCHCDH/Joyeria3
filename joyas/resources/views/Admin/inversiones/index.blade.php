@@ -7,9 +7,12 @@
     	Nuevo
   	</button>  	
   	<hr>
+
+  	<input class="form-control pull-right form-control-sm" id="inpBuscar" type="text" placeholder="Buscar.." style="width: 200px;">
   	
 	<div class="table-responsive">
-		<table class="table table-sm">
+		<br>
+		<table class="table table-sm" id="mitabla">
 		    <thead class="thead-dark">
 		      <tr>
 		        <th>ID</th>
@@ -29,11 +32,9 @@
 			           <td>							
 			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$inv->cantidad}},'{{$inv->id}}',{{$inv->id_inversionista}},'{{$inv->fecha}}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
 			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$inv->id}},'{{ route('inversiones.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
-
-
 			           </td>
 			        </tr>			       
-			    @endforeach					        
+			    @endforeach	 				        
 		    </tbody>
 		 </table>
 		 {{ $inversiones->links() }}		
@@ -206,4 +207,16 @@
             $('#formEditar').attr('action', r);       	
         }
     </script>
+
+     <script>
+	    	 //Codigo que busca dentro de la tabla 	    
+		    $(document).ready(function(){
+			    $("#inpBuscar").on("keyup", function() {
+			        var value = $(this).val().toLowerCase();
+			        $("#mitabla tr").filter(function() {
+			        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			        });
+			    });			   
+			});
+	    </script>
 @endsection

@@ -18,54 +18,11 @@ class UsuariosController extends Controller
         //Dos formas de hacer consultas en laravel
         //$usuarios = DB::select('select * from users'); //1
 
-        $usuarios=User::select('id','name','email')->paginate(10);  //2    
+        $usuarios=User::select('*')->paginate(10);  //2    
         //$usuarios=User::all();
         return view('Admin.usuarios.index')
         ->with('usuarios',$usuarios); //Llama a la vista y le envia los usuarios 
       
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -77,7 +34,20 @@ class UsuariosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nombre_ya_existe = User::where([
+            ['name','=',$request->name],
+            ['id','<>',$request->id]
+        ])->get()->count()>0?true: false;
+        if($nombre_ya_existe)
+        {               
+            return redirect()->route('usuarios')
+            ->with('error','El usuario ya existe');
+        }
+        $us = User::find($request->id);
+        $us->fill($request->all());
+        $us->save();
+        return redirect()->route('usuarios')
+        ->with('success','El usuario se modifico correctamente');
     }
 
     /**
@@ -88,6 +58,9 @@ class UsuariosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $us = User::find($id);        
+        $us->delete();
+        return redirect()->route('usuarios')
+        ->with('success','El usuario se elimino correctamente');
     }
 }

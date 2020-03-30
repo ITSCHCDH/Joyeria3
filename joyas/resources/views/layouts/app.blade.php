@@ -32,10 +32,7 @@
             width: 100%;            
         }
     </style>
-     <!--Librerias para uso del calendario -->
-    
-
-
+     <!--Librerias para uso del calendario -->  
 </head>
 <body>
     <!--Incluir jQuery  -->
@@ -66,7 +63,7 @@
                             <a class="nav-link" href="{{route('articulos.index')}}">Articulos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ventas</a>
+                            <a class="nav-link" href="{{route('ventas.index')}}">Ventas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('proveedores.index')}}">Proveedores</a>
@@ -153,21 +150,18 @@
             <a class="navbar-brand" href="#"><small><em>2020,Todos los derechos reservados</em></small></a>    
             <a class="navbar-brand ml-auto" href="#"><small><em>by Oscar Delgado Camacho</em></small></a>      
         </nav>
-
-    </div>
-    
-    
+    </div>    
+    @yield('js')
     <script>
         //Script qwue cierra los mensajes flash de forma automatica
         $(document).ready(function(event)
         {
             $('.mdshide').delay(2000).fadeOut(300);
-        });  
+        }); 
 
-        //Script del calendario
-        $('#datepicker').datepicker({
-        uiLibrary: 'bootstrap4',
-        locale: 'es-es',
+        //Script para los tooltips
+        $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
         });
     </script>
    
