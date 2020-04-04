@@ -16,7 +16,7 @@ class VentasController extends Controller
      */
     public function index()
     {
-        $articulos=Articulo::select('*')->paginate(10);       
+        $articulos=Articulo::select('*')->paginate(10);            
          return view('Admin.ventas.index')
          ->with('articulos',$articulos); 
     }
@@ -42,27 +42,7 @@ class VentasController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+   
 
     /**
      * Update the specified resource in storage.
@@ -86,4 +66,6 @@ class VentasController extends Controller
     {
         //
     }
+
+   
 }

@@ -60,6 +60,7 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	Route::get('/inversiones/{id}/eliminar','InversionesController@destroy')->name('inversiones.eliminar');
 	//Rutas de controlador de ventas
 	Route::get('/ventas/index','VentasController@index')->name('ventas.index');
+	Route::get('/ventas/{id}/artVentas','VentasController@artVenta')->name('ventas.artVentas');
 });
 
 
