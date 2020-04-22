@@ -16,7 +16,7 @@ class VentasController extends Controller
      */
     public function index()
     {
-        $articulos=Articulo::select('*')->paginate(10);            
+        $articulos=Articulo::select('*')->where('status', 'Existente')->paginate(10);            
          return view('Admin.ventas.index')
          ->with('articulos',$articulos); 
     }
@@ -39,7 +39,7 @@ class VentasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd("Si llega");
     }
 
    
