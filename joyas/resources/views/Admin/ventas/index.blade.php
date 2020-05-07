@@ -1,6 +1,6 @@
  @section('content')
     @extends('layouts.app') 
-	<h3>Ventas</h3>
+	<h2>Ventas</h2>
 	<hr>
 	<dt>Datos de articulos</dt>
 	<hr>
@@ -20,7 +20,7 @@
 			    <option value="0">Selecciona un articulo</option>
 			    @foreach($articulos as $art)
 			    	@php
-						$dat=$art->precio_venta.','.$art->descripcion.','.$art->art_exist;
+						$dat=$art->id.','.$art->precio_venta.','.$art->descripcion.','.$art->art_exist;
 			    	@endphp
 			    	<option value="{{$art->id}}" title="{{$dat}}">{{$art->nombre}}</option>	
 			    @endforeach		   
@@ -31,7 +31,7 @@
 			 <input class="form-control form-control-sm" type="number" name="cantidad" min="1" max="99" step="1"  required="required" data-toggle="tooltip" data-placement="bottom"  title="Escribe la cantidad de articulos vendidos" value="1" id="cantidad" onchange="calcSubtotal()">
 		</div>
 		<div class="col-sm-2">
-			<input type="text" class="form-control form-control-sm" placeholder="Subtotal" data-toggle="tooltip" data-placement="bottom"  title="No cambiar a menos de caso extraordinario" id="subtotal">
+			<input type="text" class="form-control form-control-sm" placeholder="Subtotal" data-toggle="tooltip" data-placement="bottom"  title="No cambiar a menos de caso extraordinario" id="subtotal" style="font-weight: bold;">
 		</div>
 		<div class="col-sm-2">
 			<a  class="btn btn-primary btn-sm pull-right" id="btnAgregar" onclick="agregarFila()">Agregar</a>			
@@ -44,7 +44,12 @@
 			<dt>Total</dt>
 		</div>
 		<div class="col-sm-3">
-			<input type="text" class="form-control form-control-sm" placeholder="Total venta" data-toggle="tooltip" data-placement="bottom"  title="Total acumulado de la venta" id="total" value="0">
+			<div class="input-group mb-3 input-group-lg">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">$</span>
+			    </div>
+			    <input type="text" class="form-control" placeholder="Total venta" data-toggle="tooltip" data-placement="bottom"  title="Total acumulado de la venta" value="0" readonly="true" id="total" style="height:50px; font-size: 40px;padding: 5px">
+			</div>		
 		</div>
 		<div class="col-sm-1">
 			<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#myModalVentas">Vender</button>
@@ -69,10 +74,14 @@
 			
 	    </tbody>
 	  </table>
+	  <br>
+	  <br>
+	  <br>
 	</div>
 
 	 <!-- The Modal Ventas -->
-<form action="{{route('ventas.artVentas')}}">
+<form action="{{route('ventas.artVentas')}}" method="post">
+	@csrf <!-- Token para usar con metodo post -->
     <div class="modal" id="myModalVentas">
 	    <div class="modal-dialog">
 	      <div class="modal-content">
@@ -105,13 +114,12 @@
 		          		<dt class="pull-right">TOTAL</dt>
 		          	</div>
 		          	<div class="col-sm-4">
-		          		 <input type="text" class="form-control form-control-sm" placeholder="Total venta" data-toggle="tooltip" data-placement="bottom"  title="Total acumulado de la venta" id="totReg" value="0">
+		          		 <input type="text" class="form-control form-control-sm" placeholder="Total venta" data-toggle="tooltip" data-placement="bottom"  title="Total acumulado de la venta" id="totReg" value="0" name="total">
 		          	</div>
 		          </div>
 		         
 				</div>
 	        </div>
-
 	        
 	        <!-- Modal footer -->
 	        <div class="modal-footer">
@@ -153,24 +161,40 @@
 	{
 		//Guardamos el elemento select en la variable sel
 		var sel = document.getElementById("selArt");
-		var cad=sel.options[sel.selectedIndex].title;
-		var pcom=cad.indexOf(","); //Localiza la primera coma en la cadena
-		var ucom=cad.indexOf(",",pcom+1);//Localiza la ultima coma en la cadena				
-		var subt=cad.substring(0,cad.indexOf(","));				
-		document.getElementById('subtotal').value=document.getElementById('cantidad').value*subt;
-		//Obtenemos la cantidad de articulos disponibles
-		var cmax=cad.substring(ucom+1,cad.length);			
-		document.getElementById('cantidad').max=cmax;
+		if(sel.options[sel.selectedIndex].text!='Selecciona un articulo')
+		{	
+			//Sacamos todos los datos concatenados en title y los pasamos a variables independientes		
+			var cad=sel.options[sel.selectedIndex].title;
+			var pcom=cad.indexOf(","); //Localiza la primera coma en la cadena
+			var scom=cad.indexOf(",",pcom+1);//Localiza la segunda coma		
+			var ucom=cad.indexOf(",",scom+1);//Localiza la ultima coma en la cadena		
+			var cant=document.getElementById("cantidad").value;			
+			var subt=cad.substring(pcom+1,scom);				
+			document.getElementById('subtotal').value=cant*subt;
+			//Obtenemos la cantidad de articulos disponibles
+			var cmax=cad.substring(ucom+1,cad.length);	
+			//Colocamos el limite maximo de articulos que podemos vender		
+			document.getElementById('cantidad').max=cmax;
+		}
+		else
+		{
+			//En caso de que no haya un articulo seleccionado no permitir aumente la cantidad
+			document.getElementById('cantidad').value=1;
+		}
+		
 	}
 
 	function agregarFila()
 	{
 		var sel = document.getElementById("selArt");
 		var cad=sel.options[sel.selectedIndex].title;			
-		var pcom=cad.indexOf(","); //Localiza la primera coma en la cadena
-		var ucom=cad.indexOf(",",pcom+1);//Localiza la ultima coma en la cadena				
-		var desc=cad.substring(cad.indexOf(",")+1,ucom);
-		var preu=cad.substring(0,cad.indexOf(","));
+		var pcom=cad.indexOf(","); //Localiza la primera coma en la cadena		
+		var scom=cad.indexOf(",",pcom+1);//Localiza la segunda coma		
+		var ucom=cad.indexOf(",",scom+1);//Localiza la ultima coma en la cadena	
+		var id=cad.substring(0,pcom);			
+		var preu=cad.substring(pcom+1,scom);
+		var desc=cad.substring(scom+1,ucom);
+		var cant=document.getElementById("cantidad").value;
 		var subt=document.getElementById("subtotal").value;
 		//Hacer el concecutivo para la tabla
 		var acum= $("#tabVentas").find("tr").length;
@@ -181,13 +205,13 @@
 		//Agrega el total al input del modal de notificacion de registro
 		document.getElementById("totReg").value=tot;
 		
-		no="<td>"+acum+"</td>";
-		nom="<td>"+sel.options[sel.selectedIndex].text+"</td>";
+		no="<td> <input type='hidden' readonly style = 'border: 0' name='no[]' value='"+acum+"'>  <input type='hidden' readonly style = 'border: 0' name='id[]' value='"+id+"'>         <input type='hidden' readonly style = 'border: 0' name='des[]' value='"+desc+"'>"+acum+"</td>";
 		des="<td>"+desc+"</td>";
-		pu="<td>"+preu+"</td>";
-		can="<td>"+document.getElementById("cantidad").value+"</td>";
-		sut="<td>"+subt+"</td>";
-		acc="<button  class='btn btn-danger btn-sm' onclick='eliminarFila("+acum+")' id='btn"+acum+"'> <i class='fas fa-minus-circle'>";
+		nom="<td> <input type='hidden' readonly style = 'border: 0' name='nom[]' value='"+sel.options[sel.selectedIndex].text+"'>"+sel.options[sel.selectedIndex].text+"</td>";		
+		pu="<td> <input type='hidden' readonly style = 'border: 0'  name='pu[]' value='"+preu+"'>"+preu+"</td>";
+		can="<td> <input type='hidden' readonly style = 'border: 0' name='can[]' value='"+cant+"'>"+cant+"</td>";
+		sut="<td> <input type='hidden' readonly style = 'border: 0' name='sut[]' value='"+subt+"'>"+subt+"</td>";
+		acc="<button  class='btn btn-danger btn-sm' onclick='eliminarFila("+acum+")' id='btn"+acum+"'> <i class='fas fa-minus-circle'> </button>";
 		//Agrega la fila a la tabla principal de ventas
 		var table = document.getElementById("tabVentas").tBodies[0];
 		var row = table.insertRow();

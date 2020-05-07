@@ -77,7 +77,7 @@
                             <div class="dropdown-menu">
                               <a class="dropdown-item" href="{{ route('inversiones.index') }}">Inversiones</a>
                               <a class="dropdown-item" href="#">Retiros </a>
-                              <a class="dropdown-item" href="#">Ventas</a>
+                              <a class="dropdown-item" href="{{route('ventas.index')}}">Ventas</a>
                             </div>
                         </li>
                        
