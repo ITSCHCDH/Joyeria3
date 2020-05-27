@@ -96,7 +96,7 @@
 	        <div class="modal-body">
 	          	<h3>Total de la venta..</h3>
 	          	<div class="table-responsive-sm">
-		          <table class="table table-bordered table-sm" id="tabRegistro">
+		          <table class="table table-hover table-sm" id="tabRegistro">
 		          	<thead>
 		          		<tr>
 		          			<th>No.</th>
@@ -114,7 +114,12 @@
 		          		<dt class="pull-right">TOTAL</dt>
 		          	</div>
 		          	<div class="col-sm-4">
-		          		 <input type="text" class="form-control form-control-sm" placeholder="Total venta" data-toggle="tooltip" data-placement="bottom"  title="Total acumulado de la venta" id="totReg" value="0" name="total">
+		          		 <div class="input-group mb-3 input-group-sm">
+						    <div class="input-group-prepend">
+						      <span class="input-group-text">$</span>
+						    </div>
+						    <input type="text" class="form-control" id="totReg" data-toggle="tooltip" data-placement="bottom"  title="Total acumulado de la venta" name="total" value="0" readonly="true" id="total" style="height:30px; font-size: 25px;padding: 3px">
+						</div>
 		          	</div>
 		          </div>
 		         

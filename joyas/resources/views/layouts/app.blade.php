@@ -41,7 +41,7 @@
     <script src="{{asset('jQuery/jquery-3.4.1.js')}}"></script>
 
     <!--Menu del sistema  -->
-    <div id="app">
+    <div id="app" class="container-fluid">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">            
             <div class="container">
                 <a class="navbar-brand" href="#">
