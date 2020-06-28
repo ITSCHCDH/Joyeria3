@@ -51,7 +51,7 @@
 			</div>
 			<div class="col-sm-3">
 				<a href="{{route('usuarios')}}" data-toggle="tooltip" data-placement="bottom"  title="Usuarios">
-					<img src="{{ asset('imagenes/AddUsuarios.png') }}" class="mx-auto d-block img-fluid" alt="Cinque Terre" width="120" height="120" >
+					<img src="{{ asset('imagenes/AddUsuarios.png') }}" class="mx-auto d-block img-fluid" alt="Cinque Terre" width="100" height="140" >
 				</a>
 			</div>
 			<div class="col-sm-3">

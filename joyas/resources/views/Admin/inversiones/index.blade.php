@@ -1,6 +1,6 @@
 @section('content')
     @extends('layouts.app')  
-	<h2>inversiones</h2>
+	<h2>Inversiones</h2>
 	
 	<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalCreate">
 		<i class="fa fa-plus-square" style="font-size:15px"></i>

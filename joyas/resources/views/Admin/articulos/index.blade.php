@@ -128,7 +128,7 @@
 							    </div>
 							    <div class="form-group">
 							      <label for="name" >Precio de compra:</label>
-							      <input type="text" name="precio_compra" id="pcom" class="form-control form-control-sm" required placeholder="Introduce el precio de compra por articulo individual">
+							      <input type="text" name="precio_compra" id="pcom" class="form-control form-control-sm" onchange="calPreVen()" required placeholder="Introduce el precio de compra por articulo individual">
 							    </div>
 							    <div class="form-group">
 							      <label for="name" >Porcentaje de ganancia:</label>
