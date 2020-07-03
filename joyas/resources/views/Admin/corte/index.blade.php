@@ -17,6 +17,7 @@
 	    <table class="table" id="mitabla">
 		    <thead class="thead-dark">
 		      <tr>
+		      	<th>ID</th>
 		        <th>Fecha de corte</th>
 		        <th>Ventas del periodo</th>
 		        <th>Gastos operativos</th>
@@ -26,31 +27,27 @@
 		      </tr>
 		    </thead>
 		    <tbody>
-		      <tr>
-		        <td>John</td>
-		        <td>Doe</td>
-		        <td>john@example.com</td>
-		      </tr>
-		      <tr>
-		        <td>Mary</td>
-		        <td>Moe</td>
-		        <td>mary@example.com</td>
-		      </tr>
-		      <tr>
-		        <td>July</td>
-		        <td>Dooley</td>
-		        <td>july@example.com</td>
-		      </tr>
+		    	@foreach($corte as $cor)
+			      	<tr>
+			        	<td>{{$cor->id}}</td>
+			       	 	<td>{{$cor->fecha_corte}}</td>
+			        	<td>{{$cor->ventas_periodo}}</td>
+			        	<td>{{$cor->gastos_operativos}}</td>
+			        	<td>{{$cor->descripcion_gastos}}</td>
+			        	<td>{{$cor->gastos_extraordinarios}}</td>
+			        	<td>{{$cor->descripcion_gastos_extra}}</td>
+			      	</tr>
+			    @endforeach		     
 		    </tbody>
 	  </table>	
 	</div>
 
-
+	
 	<!-- The Modal -->
 	<div class="modal fade" id="modalAddCorte">		
 	    <div class="modal-dialog">
 	        <div class="modal-content">
-	        <form id="modAddCorte">
+	        <form id="modAddCorte"  action="{{ route('corte.store')}}">
 		        <!-- Modal Header -->
 		        <div class="modal-header">
 		          <h4 class="modal-title">Agregar corte</h4>
@@ -58,50 +55,61 @@
 		        </div>
 		        
 		        <!-- Modal body -->
-		        <div class="modal-body">	        	
-			        	<div class="input-group mb-3 input-group-sm">
-						    <div class="input-group-prepend">
-						       <span class="input-group-text">Fecha de corte</span>
+		        	<!-- si no hay ventas en el periodo, no se hace el corte -->
+					@if($venPer!=0)
+						<div class="modal-body">	        	
+				        	<div class="input-group mb-3 input-group-sm">
+							    <div class="input-group-prepend">
+							       <span class="input-group-text">Fecha de corte</span>
+							    </div>
+							    <input type="text" class="form-control" readonly name="fecha_corte" id="addFc">
 						    </div>
-						    <input type="text" class="form-control" readonly name="fecha_corte" id="addFc">
-					    </div>
-			        	<div class="input-group mb-3 input-group-sm">
-						    <div class="input-group-prepend">
-						       <span class="input-group-text">Ventas del periodo</span>
+				        	<div class="input-group mb-3 input-group-sm">
+							    <div class="input-group-prepend">
+							       <span class="input-group-text">Ventas del periodo</span>
+							    </div>
+							    <input type="text" class="form-control" readonly name="ventas_periodo" value="{{$venPer}}">
 						    </div>
-						    <input type="text" class="form-control" readonly name="ventas_periodo">
-					    </div>
-					    <div class="input-group mb-3 input-group-sm">
-						    <div class="input-group-prepend">
-						       <span class="input-group-text">Gastos operativos</span>
+						    <div class="input-group mb-3 input-group-sm">
+							    <div class="input-group-prepend">
+							       <span class="input-group-text">Gastos operativos</span>
+							    </div>
+							    <input type="text" class="form-control" readonly name="gastos_operativos" value="{{$gasOp}}"> 
 						    </div>
-						    <input type="text" class="form-control" readonly name="gastos_operativos"> 
-					    </div>
-					    <div class="input-group mb-3 input-group-sm">
-						    <div class="input-group-prepend">
-						       <span class="input-group-text">Descripción de gastos</span>
+						    <div class="input-group mb-3 input-group-sm">
+							    <div class="input-group-prepend">
+							       <span class="input-group-text">Descripción de gastos</span>
+							    </div>
+							    <input type="text" class="form-control" name="descripcion_gastos">
 						    </div>
-						    <input type="text" class="form-control" name="descripcion_gastos">
-					    </div>
-					    <div class="input-group mb-3 input-group-sm">
-						    <div class="input-group-prepend">
-						       <span class="input-group-text">Gastos extraordinarios</span>
+						    <div class="input-group mb-3 input-group-sm">
+							    <div class="input-group-prepend">
+							       <span class="input-group-text">Gastos extraordinarios</span>
+							    </div>
+							    <input type="text" class="form-control" name="gastos_extraordinarios">
 						    </div>
-						    <input type="text" class="form-control" name="gastos_estraordinarios">
-					    </div>
-					    <div class="input-group mb-3 input-group-sm">
-						    <div class="input-group-prepend">
-						       <span class="input-group-text">Descripción de gastos extraordinarios</span>
-						    </div>
-						    <input type="text" class="form-control" name="descripcion_gastos_extra">
-					    </div>				 
-		        </div>
+						    <div class="input-group mb-3 input-group-sm">
+							    <div class="input-group-prepend">
+							       <span class="input-group-text">Descripción de gastos extraordinarios</span>
+							    </div>
+							    <input type="text" class="form-control" name="descripcion_gastos_extra">
+						    </div>				 
+				        </div>
+				        <!-- Modal footer -->
+				        <div class="modal-footer">
+				        	<button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+				            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+				        </div>
+					@else
+						<div class="modal-body">	        	
+				        <h5>No hay ventas para realizar el corte!</h5>
+				         <div class="modal-footer">				        	
+				            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+				        </div>
+					@endif
+		       
 		        
-		        <!-- Modal footer -->
-		        <div class="modal-footer">
-		        	<button type="submit" class="btn btn-primary btn-sm" data-dismiss="modal">Guardar</button>
-		            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
-		        </div>
+		       
 	        </form>   
 	      </div>
 	    </div>
