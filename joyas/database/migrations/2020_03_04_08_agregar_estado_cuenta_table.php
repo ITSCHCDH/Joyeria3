@@ -14,12 +14,10 @@ class AgregarEstadoCuentaTable extends Migration
     public function up()
     { 
 
-        Schema::create('estado-cuenta', function (Blueprint $table) {
+        Schema::create('estado_cuenta', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('fecha_corte');            
-            $table->integer('ventas_periodo');
-            $table->integer('capital_inventario');
-            $table->integer('capital_ganancias');
+            $table->integer('ventas_periodo');                   
             $table->integer('gastos_operativos');
             $table->string('descripcion_gastos',1000);
             $table->integer('gastos_extraordinarios');
@@ -35,6 +33,6 @@ class AgregarEstadoCuentaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estado-cuenta');
+        Schema::dropIfExists('estado_cuenta');
     }
 }

@@ -32,7 +32,7 @@ class ProveedoresController extends Controller
     public function store(Request $request)
     {
 
-         $nombre_ya_existe = Proveedor::where('nombre','=',$request->nombre)->get()->count() > 0? true: false;
+        $nombre_ya_existe = Proveedor::where('nombre','=',$request->nombre)->get()->count() > 0? true: false;
         if($nombre_ya_existe){            
             return redirect()->route('proveedores.index')
             ->with('error','El proveedor ya se encuentra registrado');

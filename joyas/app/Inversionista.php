@@ -9,5 +9,6 @@ class Inversionista extends Model
      //Nombre de la tabla
     protected $table="inversionistas";
     //Datos visibles para los objetos json
-    protected $fillable=['nombre'];
+    protected $fillable=['nombre','dividendos']; 
+    
 }

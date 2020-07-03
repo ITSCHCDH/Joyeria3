@@ -86,9 +86,11 @@
                               Administración
                             </a>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item" href="{{ route('usuarios') }}">{{ __('Usuarios') }}</a>
-                              <a class="dropdown-item" href="{{ route('categorias.index') }}">{{ __('Categorias') }}</a>
-                              <a class="dropdown-item" href="{{ route('inversionistas.index') }}">Inversionistas</a>
+                                <a class="dropdown-item" href="{{ route('usuarios') }}">{{ __('Usuarios') }}</a>
+                                <a class="dropdown-item" href="{{ route('categorias.index') }}">{{ __('Categorias') }}</a>
+                                <a class="dropdown-item" href="{{ route('inversionistas.index') }}">Inversionistas</a>
+                                <a class="dropdown-item" href="{{ route('reglas.index') }}">Reglas de negocio</a>
+                                 <a class="dropdown-item" href="{{ route('corte.index') }}">Corte</a>
                             </div>
                         </li>
                     </ul>

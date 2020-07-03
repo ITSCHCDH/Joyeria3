@@ -16,7 +16,7 @@ class InversionistasController extends Controller
      */
     public function index()
     {
-        $inversionistas=Inversionista::select('id','nombre')->paginate(10);          
+        $inversionistas=Inversionista::select('id','nombre','dividendos')->paginate(10);          
         return view('Admin.inversionistas.index')
         ->with('inversionistas',$inversionistas);
     }
@@ -31,10 +31,18 @@ class InversionistasController extends Controller
      */
     public function store(Request $request)
     {
+        //Valida que el inversionista no exista en el sistema
         $nombre_ya_existe = Inversionista::where('nombre','=',$request->nombre)->get()->count() > 0? true: false;
         if($nombre_ya_existe){            
             return redirect()->route('inversionistas.index')
-            ->with('error','El inversionista ya esta dado de alta');
+            ->with('error','El inversionista ya está dado de alta');
+        }
+        //Valida que el pporcentaje de inversion total no supere 100%
+        $prcInvTot = DB::table('inversionistas')->sum('dividendos');
+        $tot=$prcInvTot+$request->dividendos;       
+        if($tot>100){            
+            return redirect()->route('inversionistas.index')
+            ->with('error','El porcentaje de inversión total a superado el 100%');
         }
         //Recibimos los datos de la vista de altas y en este metodo es donde registramos los datos a la BD
         $inv = new Inversionista($request->all());      

@@ -1,6 +1,6 @@
 @section('content')
     @extends('layouts.app')  
-	<h2>inversionistas</h2>
+	<h2>Inversionistas</h2>
 	
 	<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalCreate">
 		<i class="fa fa-plus-square" style="font-size:15px"></i>
@@ -17,14 +17,16 @@
 		      <tr>
 		        <th>ID</th>
 		        <th>NOMBRE</th>	
-		        <th>ACCIONES</th>			        
+		         <th>DIVIDENDOS</th>	
+		        <th>ACCIONES</th>	
 		      </tr>
 		    </thead> 
 		    <tbody>
 		    	@foreach($inversionistas as $inv)
 			        <tr>
 			           <td>{{$inv->id}}</td>
-			           <td>{{$inv->nombre}}</td>	
+			           <td>{{$inv->nombre}}</td>
+			           <td>{{$inv->dividendos}}</td>	
 			           <td>							
 			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$inv}},'{{ route('inversionistas.actualizar',$inv->id) }}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
 			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$inv}},'{{ route('inversionistas.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
@@ -57,7 +59,11 @@
 				    <div class="form-group">
 				      <label for="name">Nombre del inversionista:</label>
 				      <input type="text" class="form-control" placeholder="Introduzca nombre del inversionista" id="nombre" name="nombre" required>
-				    </div>				
+				    </div>		
+				    <div class="form-group">
+				      <label for="name">Porcentaje de dividendos:</label>
+				      <input type="number" class="form-control" placeholder="Introduzca el porcentaje" id="dividendos" name="dividendos" min="1" max="100" onchange="valPrc()" required>
+				    </div>			
 		        </div>
 		        
 		        <!-- Modal footer -->
@@ -89,7 +95,11 @@
 				    <div class="form-group">
 				      <label for="name">nombre:</label>
 				      <input type="input" class="form-control" placeholder="Introduzca nombre del inversionista" id="inv" name="nombre"  required>
-				    </div>				
+				    </div>	
+			     	<div class="form-group">
+				      <label for="name">Porcentaje de dividendos:</label>
+				      <input type="number" class="form-control" placeholder="Introduzca el porcentaje" id="dividendosE" name="dividendos" min="1" max="100" onchange="valPrc()" required>
+				    </div>			
 		        </div>						        
 		        <!-- Modal footer -->
 		        <div class="modal-footer">
@@ -133,7 +143,8 @@
         function edit(n,r)
         {                            
             //console.log(r);//Este comando envia datos a la consola del navegador para poder observar que esta pasando
-            document.getElementById("inv").value = n["nombre"];           
+            document.getElementById("inv").value = n["nombre"];   
+            document.getElementById("dividendosE").value = n["dividendos"];        
             txt="inversionistas/Editar"+"("+n["nombre"]+")";            
             $("#textCabUpd").text(txt);           
             $('#formEditar').attr('action', r);            
@@ -146,6 +157,17 @@
             $("#textCabUnd").text(txt);
             $("#msgEliminar").text(txt2);           
             $('#formEliminar').attr('action', r);            
+        }
+        function valPrc()
+        {                            
+            //Funcion que valida que los porcentajes se mantengan dentro de los limites de 1-100
+            div=document.getElementById("dividendos").value;  
+            if(div<=0 || div>100)
+            {
+            	alert("El porcentaje de los dividendos deve ser en un rago de 1-100");
+            	document.getElementById("dividendos").value=1;
+            }
+
         }
     </script>
     <script>

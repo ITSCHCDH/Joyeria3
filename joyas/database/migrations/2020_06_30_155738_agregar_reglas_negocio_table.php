@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AgregarInversionistasTable extends Migration
+class AgregarReglasNegocioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class AgregarInversionistasTable extends Migration
      */
     public function up()
     {
-        Schema::create('inversionistas', function (Blueprint $table) {
+        Schema::create('reglas_negocio', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre',100);
-            $table->integer('dividendos');
             $table->timestamps();
+            $table->integer('prc_ganancia');
+            $table->integer('prc_operacion');
         });
     }
 
@@ -28,6 +28,6 @@ class AgregarInversionistasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inversionistas');
+        Schema::dropIfExists('reglas_negocio');
     }
 }

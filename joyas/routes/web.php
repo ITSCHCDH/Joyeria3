@@ -61,6 +61,14 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	//Rutas de controlador de ventas
 	Route::get('/ventas/index','VentasController@index')->name('ventas.index');
 	Route::post('/ventas/artVentas','VentasController@store')->name('ventas.artVentas');	
+	//Rutas de controlador de reglas
+	Route::get('/reglas/index','ReglasController@index')->name('reglas.index');
+	Route::get('/reglas/store','ReglasController@store')->name('reglas.store');
+	Route::get('/reglas/{id}/actualizar','ReglasController@update')->name('reglas.actualizar');
+	//Rutas de controlador de Estado de cuenta
+	Route::get('/corte/index','Estado_CuentaController@index')->name('corte.index');
+	Route::get('/corte/store','Estado_CuentaController@store')->name('corte.store');
+	Route::get('/corte/{id}/actualizar','Estado_CuentaController@update')->name('corte.actualizar');
 });
 
 
