@@ -4,22 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AgregarRetirosTable extends Migration
+class EstadoCuentaTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up() 
     {
-        Schema::create('retiros', function (Blueprint $table) {
+        Schema::create('estado_cuenta', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('id_inversionista')->unsigned()->nullable();
+            $table->enum('concepto', ['utilidad', 'inversion','retiro']);
             $table->integer('monto');
             $table->date('fecha');
-            $table->bigInteger('id_inversionista')->unsigned();
+            $table->string('corte',20);
 
-            $table->foreign('id_inversionista')->references('id')->on('inversionistas')->ondelete('cascade');
+            $table->foreign('id_inversionista')->references('id')->on('inversionistas')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class AgregarRetirosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('retiros');
+        Schema::dropIfExists('estado_cuenta');
     }
 }

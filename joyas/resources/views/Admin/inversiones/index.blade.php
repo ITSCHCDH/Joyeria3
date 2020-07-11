@@ -27,11 +27,11 @@
 			        <tr>
 			           <td>{{$inv->id}}</td>
 			           <td>{{$inv->fecha}}</td>	
-			           <td>{{$inv->cantidad}}</td>
+			           <td>{{$inv->monto}}</td>
 			           <td>{{$inv->nombre}}</td>
 			           <td>							
-			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$inv->cantidad}},'{{$inv->id}}',{{$inv->id_inversionista}},'{{$inv->fecha}}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
-			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$inv->id}},'{{ route('inversiones.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
+			           		<a class="btn btn-warning btn-sm" href="#" data-toggle="modal" data-target="#modalEdit" onclick="edit({{$inv->monto}},'{{$inv->id}}',{{$inv->id_inversionista}},'{{$inv->fecha}}')"><i class="fa fa-edit" style="font-size:15px" ></i></a>
+			           		<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modalUndo" onclick="undo({{$inv->id}},'{{ route('estado_cuenta.eliminar',$inv->id) }}')"><i class="material-icons" style="font-size:15px; color:black">delete_forever</i></a>
 			           </td>
 			        </tr>			       
 			    @endforeach	 				        
@@ -60,15 +60,15 @@
 		        <div class="modal-body">            
 				    <div class="form-group">
 				      <label for="name">Fecha de inversión:</label>
-				      <input type="date" name="calendario" class="form-control form-control-sm" required>
+				      <input type="date" name="fecha" class="form-control form-control-sm" value="@php echo date("Y-m-d"); @endphp" required>
 				    </div>	
 				    <div class="form-group">
 				      <label for="name" >Cantidad:</label>
-				      <input type="text" name="cantidad" class="form-control form-control-sm" required>
+				      <input type="text" name="monto" class="form-control form-control-sm" required>
 				    </div>			     
 				    <div class="form-group">
 						<label for="selAdd">Inversionista:</label>
-						<select class="form-control form-control-sm" id="selAdd" required=>					
+						<select class="form-control form-control-sm" id="selAdd" required=>		
 							<option value="0">Selecciona un inversionista</option>    
 						   @foreach($inversionistas as $inv2)
 								<option value="{{$inv2->id}}">{{$inv2->nombre}}</option>
@@ -109,15 +109,15 @@
 				    </div>           
 				    <div class="form-group">
 				      <label for="name">Fecha de inversión:</label>
-				      <input type="date" name="calendario" id="dateEdit" class="form-control form-control-sm" required>
+				      <input type="date" name="fecha" id="dateEdit" class="form-control form-control-sm" required>
 				    </div>	
 				    <div class="form-group">
 				      <label for="name">Cantidad:</label>
-				      <input type="input" class="form-control" placeholder="Introduzca nombre del inversionista" id="cantidad" name="cantidad"  required>
+				      <input type="input" class="form-control" placeholder="Introduzca nombre del inversionista" id="cantidad" name="monto"  required>
 				    </div>	
 				     <div class="form-group">
 						<label for="selEdit">Inversionista:</label>
-						<select class="form-control form-control-sm" id="selEdit" required>				    
+						<select class="form-control form-control-sm" id="selEdit" required>		    
 						    @foreach($inversionistas as $inv2)
 								<option value="{{$inv2->id}}">{{$inv2->nombre}}</option>
 							@endforeach

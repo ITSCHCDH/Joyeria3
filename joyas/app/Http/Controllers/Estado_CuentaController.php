@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Estado_Cuenta;
-use App\Venta;
+use App\Inversionista;
 use DB;
 
 class Estado_CuentaController extends Controller
@@ -16,24 +16,16 @@ class Estado_CuentaController extends Controller
      */
     public function index()
     {
-        //Consultamos los cortes realizados historicamente
-        $corte=Estado_Cuenta::select('id','fecha_corte','ventas_periodo','gastos_operativos','descripcion_gastos','gastos_extraordinarios','descripcion_gastos_extra')->paginate(10);
-        //Consultamos el total de las ventas desde el ultimo corte a la fecha seleccionada
-        $venPer=DB::table('ventas')                    
-                     ->where('status', '=', '0')   
-                     ->sum('total');
-        //Obtenemos los gastos operativos en relacion a lo acordado en las reglas de negocio
-        $prcOp=DB::table('reglas_negocio')
-                   ->select('prc_operacion')->get();  
-        foreach ($prcOp as $po) {
-             $gasOp= ($venPer*$po->prc_operacion)/100; 
-         } 
-                     
-        //dd($gasOp);
-        return view('Admin.corte.index')
-        ->with('corte',$corte) //Retornamos los cortes historicos
-        ->with('venPer',$venPer) //Retornamos el total de las ventas del periodo
-        ->with('gasOp',$gasOp); //Retornamos los gatos operativos establecidos en las reglas de negocio
+        $inversiones=DB::table('estado_cuenta')
+        ->join('inversionistas', 'id_inversionista', '=', 'inversionistas.id')           
+        ->select('estado_cuenta.*', 'inversionistas.nombre')
+        ->where('estado_cuenta.concepto', '=', 'inversion')
+        ->orderBy('estado_cuenta.id')
+        ->paginate(10);       
+        $inversionistas=DB::table('inversionistas')->get();          
+        return view('Admin.inversiones.index')
+        ->with('inversiones',$inversiones)
+        ->with('inversionistas',$inversionistas);
     }
 
     /**
@@ -52,32 +44,21 @@ class Estado_CuentaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id_inv)
     {
+        //Alta de inverión
+        DB::table('estado_cuenta')->insert(
+            [
+                'id_inversionista' => $id_inv, 
+                'monto' => $request->monto,
+                'fecha'=>$request->fecha,
+                'concepto'=>'inversion',
+                'corte'=>'N/A'
+            ]
+        );
 
-        DB::beginTransaction();
-
-        try 
-        {
-            DB::table('ventas')
-            ->where('status', '0')
-            ->update(['status' => '1']);
-
-            DB::table('estado_cuenta')->insert(['fecha_corte' => $request->fecha_corte, 
-                'ventas_periodo' => $request->ventas_periodo,'gastos_operativos'=>$request->gastos_operativos,'descripcion_gastos'=>$request->descripcion_gastos,'gastos_extraordinarios'=>$request->gastos_extraordinarios,'descripcion_gastos_extra'=>$request->descripcion_gastos_extra] );
-            
-
-            DB::commit();
-            return redirect()->route('corte.index')
-            ->with('success','El corte se realizo correctamente');
-        } 
-        catch (\Exception $e) 
-        {
-            DB::rollback();
-             return redirect()->route('corte.index')
-            ->with('error','El corte no se pudo realizar');
-        }     
-       
+        return redirect()->route('estado_cuenta.index')
+        ->with('success','La inversión se registro correctamente');
     }
 
     /**
@@ -109,9 +90,21 @@ class Estado_CuentaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id,$id_inv)
     {
-        //
+        DB::table('estado_cuenta')
+              ->where('id', $id)
+              ->update(
+              [
+                'id_inversionista' => $id_inv, 
+                'monto' => $request->monto,
+                'fecha'=>$request->fecha,
+                'concepto'=>'inversion',
+                'corte'=>'N/A'
+              ]);
+
+        return redirect()->route('estado_cuenta.index')
+        ->with('warning','La inversión se modifico correctamente');
     }
 
     /**
@@ -122,6 +115,8 @@ class Estado_CuentaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('estado_cuenta')->where('id', '=', $id)->delete();
+        return redirect()->route('estado_cuenta.index')
+        ->with('error','La inversión se elimino correctamente');
     }
 }

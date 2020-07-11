@@ -52,12 +52,7 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	Route::get('/inversionistas/index','InversionistasController@index')->name('inversionistas.index');
 	Route::get('/inversionistas/store','InversionistasController@store')->name('inversionistas.store');
 	Route::get('/inversionistas/{id}/actualizar','InversionistasController@update')->name('inversionistas.actualizar');
-	Route::get('/inversionistas/{id}/eliminar','InversionistasController@destroy')->name('inversionistas.eliminar');
-	//Rutas del controlador de inversiones
-	Route::get('/inversiones/index','InversionesController@index')->name('inversiones.index');
-	Route::get('/inversiones/{id_i}/store','InversionesController@store')->name('inversiones.store');
-	Route::get('/inversiones/{id}/actualizar/{inv}','InversionesController@update')->name('inversiones.actualizar');
-	Route::get('/inversiones/{id}/eliminar','InversionesController@destroy')->name('inversiones.eliminar');
+	Route::get('/inversionistas/{id}/eliminar','InversionistasController@destroy')->name('inversionistas.eliminar');	
 	//Rutas de controlador de ventas
 	Route::get('/ventas/index','VentasController@index')->name('ventas.index');
 	Route::post('/ventas/artVentas','VentasController@store')->name('ventas.artVentas');	
@@ -66,9 +61,14 @@ Route::group(['prefix'=>'Admin', 'middleware' => 'auth'],function(){
 	Route::get('/reglas/store','ReglasController@store')->name('reglas.store');
 	Route::get('/reglas/{id}/actualizar','ReglasController@update')->name('reglas.actualizar');
 	//Rutas de controlador de Estado de cuenta
-	Route::get('/corte/index','Estado_CuentaController@index')->name('corte.index');
-	Route::get('/corte/store','Estado_CuentaController@store')->name('corte.store');
-	Route::get('/corte/{id}/actualizar','Estado_CuentaController@update')->name('corte.actualizar');
+	Route::get('/corte/index','CorteController@index')->name('corte.index');
+	Route::get('/corte/store','CorteController@store')->name('corte.store');
+	Route::get('/corte/{id}/cuenta','CorteController@cuenta')->name('corte.cuenta');
+	//Rutas del controlador de estado_cuenta
+	Route::get('/estado_cuenta/index','Estado_CuentaController@index')->name('estado_cuenta.index');
+	Route::get('/estado_cuenta/{id_i}/store','Estado_CuentaController@store')->name('estado_cuenta.store');
+	Route::get('/estado_cuenta/{id}/actualizar/{inv}','Estado_CuentaController@update')->name('estado_cuenta.actualizar');
+	Route::get('/estado_cuenta/{id}/eliminar','Estado_CuentaController@destroy')->name('estado_cuenta.eliminar');
 });
 
 
